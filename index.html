@@ -3,30 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Example Site</title>
+  <title>Markdown Previewer</title>
   <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css"
+  />
 </head>
 <body>
-  <header>
-    <h1>Welcome to Example Site</h1>
-  </header>
-  <main>
-    <section class="content">
-      <h2>Featured Content</h2>
-      <p>This is the main content area of the site. Explore our features and enjoy the experience.</p>
-    </section>
-    <aside class="sidebar">
-      <h2>Sidebar</h2>
-      <ul>
-        <li>Link 1</li>
-        <li>Link 2</li>
-        <li>Link 3</li>
-      </ul>
-    </aside>
-  </main>
-  <footer>
-    <p>&copy; 2025 Example Site. All rights reserved.</p>
-  </footer>
-  <script src="script.js"></script>
+  <div id="app"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.12/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+  <script type="text/babel" src="script.js"></script>
 </body>
 </html>
