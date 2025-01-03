@@ -15,32 +15,34 @@
     };
 
     // React Components
-    const Toolbar = (props) => (
-        <div className="toolbar">
-            <i className="fa fa-free-code-camp" title="no-stack-dub-sack"></i>
-            {props.text}
-            <i className={props.icon} onClick={props.onClick}></i>
-        </div>
-    );
+    function Toolbar(props) {
+        return React.createElement(
+            "div",
+            { className: "toolbar" },
+            React.createElement("i", { className: "fa fa-free-code-camp", title: "no-stack-dub-sack" }),
+            props.text,
+            React.createElement("i", { className: props.icon, onClick: props.onClick })
+        );
+    }
 
-    const Editor = (props) => (
-        <textarea
-            id="editor"
-            onChange={props.onChange}
-            type="text"
-            value={props.markdown}
-        />
-    );
+    function Editor(props) {
+        return React.createElement("textarea", {
+            id: "editor",
+            onChange: props.onChange,
+            value: props.markdown
+        });
+    }
 
-    const Preview = (props) => (
-        <div
-            dangerouslySetInnerHTML={{
+    function Preview(props) {
+        return React.createElement("div", {
+            dangerouslySetInnerHTML: {
                 __html: marked(props.markdown, { renderer: renderer })
-            }}
-            id="preview"
-        />
-    );
+            },
+            id: "preview"
+        });
+    }
 
+    // MarkdownPreviewer Component
     class MarkdownPreviewer extends React.Component {
         constructor(props) {
             super(props);
@@ -89,29 +91,33 @@
                     : 'fa fa-arrows-alt'
             };
 
-            return (
-                <div>
-                    <div className={classes.editorWrap}>
-                        <Toolbar 
-                            icon={classes.icon}
-                            onClick={this.handleEditorMaximize}
-                            text="Editor"
-                        />
-                        <Editor
-                            markdown={this.state.markdown}
-                            onChange={this.handleChange}
-                        />
-                    </div>
-                    <div className="converter" />
-                    <div className={classes.previewWrap}>
-                        <Toolbar
-                            icon={classes.icon}
-                            onClick={this.handlePreviewMaximize}
-                            text="Previewer"
-                        />
-                        <Preview markdown={this.state.markdown} />
-                    </div>
-                </div>
+            return React.createElement(
+                "div",
+                null,
+                React.createElement(
+                    "div",
+                    { className: classes.editorWrap },
+                    React.createElement(Toolbar, {
+                        icon: classes.icon,
+                        onClick: this.handleEditorMaximize,
+                        text: "Editor"
+                    }),
+                    React.createElement(Editor, {
+                        markdown: this.state.markdown,
+                        onChange: this.handleChange
+                    })
+                ),
+                React.createElement("div", { className: "converter" }),
+                React.createElement(
+                    "div",
+                    { className: classes.previewWrap },
+                    React.createElement(Toolbar, {
+                        icon: classes.icon,
+                        onClick: this.handlePreviewMaximize,
+                        text: "Previewer"
+                    }),
+                    React.createElement(Preview, { markdown: this.state.markdown })
+                )
             );
         }
     }
@@ -161,5 +167,5 @@ And here. | Okay. | I think we get it.
 `;
 
     // Render app
-    ReactDOM.render(<MarkdownPreviewer />, document.getElementById("app"));
+    ReactDOM.render(React.createElement(MarkdownPreviewer), document.getElementById("app"));
 })();
