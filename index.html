@@ -20,13 +20,15 @@
   <!-- Load the marked library first -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.12/marked.min.js"></script>
   
-  <!-- Then load React, ReactDOM, and Babel -->
+  <!-- Then load React, ReactDOM, and Prism -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+
+  <!-- Load Babel (for JSX transformation in the browser) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
 
-  <!-- Your custom JS code (now it will have access to marked) -->
+  <!-- Now load your custom JS -->
   <script type="text/babel" src="script.js"></script>
 </body>
 </html>
