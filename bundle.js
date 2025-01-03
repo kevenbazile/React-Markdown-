@@ -1,9 +1,7 @@
-Js 
-
 (function () {
     "use strict";
 
-    // Configure the marked library for markdown parsing
+    // Configure marked library
     marked.setOptions({
         breaks: true,
         highlight: function (code) {
@@ -11,74 +9,12 @@ Js
         },
     });
 
-    // Custom renderer for links to open in a new tab
     const renderer = new marked.Renderer();
     renderer.link = function (href, title, text) {
         return `<a target="_blank" href="${href}">${text}</a>`;
     };
 
-    // React component for the Markdown Previewer
-    class MarkdownPreviewer extends React.Component {
-        constructor(props) {
-            super(props);
-            this.state = {
-                markdown: initialMarkdown,
-                editorMaximized: false,
-                previewMaximized: false,
-            };
-
-            // Bind methods
-            this.handleChange = this.handleChange.bind(this);
-            this.handleEditorMaximize = this.handleEditorMaximize.bind(this);
-            this.handlePreviewMaximize = this.handlePreviewMaximize.bind(this);
-        }
-
-        handleChange(event) {
-            this.setState({ markdown: event.target.value });
-        }
-
-        handleEditorMaximize() {
-            this.setState({ editorMaximized: !this.state.editorMaximized });
-        }
-
-        handlePreviewMaximize() {
-            this.setState({ previewMaximized: !this.state.previewMaximized });
-        }
-
-        render() {
-            const { editorMaximized, previewMaximized, markdown } = this.state;
-
-            const layoutClasses = editorMaximized
-                ? ["editorWrap maximized", "previewWrap hide", "fa fa-compress"]
-                : previewMaximized
-                ? ["editorWrap hide", "previewWrap maximized", "fa fa-compress"]
-                : ["editorWrap", "previewWrap", "fa fa-arrows-alt"];
-
-            return (
-                <div>
-                    <div className={layoutClasses[0]}>
-                        <Toolbar
-                            icon={layoutClasses[2]}
-                            onClick={this.handleEditorMaximize}
-                            text="Editor"
-                        />
-                        <Editor markdown={markdown} onChange={this.handleChange} />
-                    </div>
-                    <div className="converter" />
-                    <div className={layoutClasses[1]}>
-                        <Toolbar
-                            icon={layoutClasses[2]}
-                            onClick={this.handlePreviewMaximize}
-                            text="Previewer"
-                        />
-                        <Preview markdown={markdown} />
-                    </div>
-                </div>
-            );
-        }
-    }
-
-    // Toolbar component
+    // React Components
     const Toolbar = (props) => (
         <div className="toolbar">
             <i className="fa fa-free-code-camp" title="no-stack-dub-sack"></i>
@@ -87,27 +23,100 @@ Js
         </div>
     );
 
-    // Editor component
     const Editor = (props) => (
         <textarea
             id="editor"
             onChange={props.onChange}
             type="text"
             value={props.markdown}
-        ></textarea>
+        />
     );
 
-    // Preview component
     const Preview = (props) => (
         <div
-            dangerouslySetInnerHTML={{ __html: marked(props.markdown, { renderer }) }}
+            dangerouslySetInnerHTML={{
+                __html: marked(props.markdown, { renderer: renderer })
+            }}
             id="preview"
-        ></div>
+        />
     );
 
-    // Initial markdown content
-    const initialMarkdown = `
-# Welcome to my React Markdown Previewer!
+    class MarkdownPreviewer extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                markdown: initialMarkdown,
+                editorMaximized: false,
+                previewMaximized: false
+            };
+            this.handleChange = this.handleChange.bind(this);
+            this.handleEditorMaximize = this.handleEditorMaximize.bind(this);
+            this.handlePreviewMaximize = this.handlePreviewMaximize.bind(this);
+        }
+
+        handleChange(e) {
+            this.setState({
+                markdown: e.target.value
+            });
+        }
+
+        handleEditorMaximize() {
+            this.setState({
+                editorMaximized: !this.state.editorMaximized
+            });
+        }
+
+        handlePreviewMaximize() {
+            this.setState({
+                previewMaximized: !this.state.previewMaximized
+            });
+        }
+
+        render() {
+            const classes = {
+                editorWrap: this.state.editorMaximized
+                    ? 'editorWrap maximized'
+                    : this.state.previewMaximized
+                        ? 'editorWrap hide'
+                        : 'editorWrap',
+                previewWrap: this.state.previewMaximized
+                    ? 'previewWrap maximized'
+                    : this.state.editorMaximized
+                        ? 'previewWrap hide'
+                        : 'previewWrap',
+                icon: this.state.editorMaximized || this.state.previewMaximized
+                    ? 'fa fa-compress'
+                    : 'fa fa-arrows-alt'
+            };
+
+            return (
+                <div>
+                    <div className={classes.editorWrap}>
+                        <Toolbar 
+                            icon={classes.icon}
+                            onClick={this.handleEditorMaximize}
+                            text="Editor"
+                        />
+                        <Editor
+                            markdown={this.state.markdown}
+                            onChange={this.handleChange}
+                        />
+                    </div>
+                    <div className="converter" />
+                    <div className={classes.previewWrap}>
+                        <Toolbar
+                            icon={classes.icon}
+                            onClick={this.handlePreviewMaximize}
+                            text="Previewer"
+                        />
+                        <Preview markdown={this.state.markdown} />
+                    </div>
+                </div>
+            );
+        }
+    }
+
+    const initialMarkdown = `# Welcome to my React Markdown Previewer!
 
 ## This is a sub-heading...
 ### And here's some other cool stuff:
@@ -118,7 +127,7 @@ Heres some code, \`<div></div>\`, between 2 backticks.
 // this is multi-line code:
 
 function anotherExample(firstLine, lastLine) {
-  if (firstLine == '```' && lastLine == '```') {
+  if (firstLine == '\`\`\`' && lastLine == '\`\`\`') {
     return multiLineCode;
   }
 }
@@ -151,9 +160,6 @@ And here. | Okay. | I think we get it.
 ![freeCodeCamp Logo](https://cdn.freecodecamp.org/testable-projects-fcc/images/fcc_secondary.svg)
 `;
 
-    // Render the MarkdownPreviewer component
-    ReactDOM.render(
-        <MarkdownPreviewer />,
-        document.getElementById("app")
-    );
+    // Render app
+    ReactDOM.render(<MarkdownPreviewer />, document.getElementById("app"));
 })();
